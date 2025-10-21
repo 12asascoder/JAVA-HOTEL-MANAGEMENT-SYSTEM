@@ -3,7 +3,7 @@ WORKDIR /workspace
 COPY . .
 RUN mvn -q -DskipTests -pl booking-service -am package
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /workspace/booking-service/target/*.jar /app/app.jar
 EXPOSE 8082

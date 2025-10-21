@@ -3,7 +3,7 @@ WORKDIR /workspace
 COPY . .
 RUN mvn -q -DskipTests -pl room-service -am package
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /workspace/room-service/target/*.jar /app/app.jar
 EXPOSE 8083

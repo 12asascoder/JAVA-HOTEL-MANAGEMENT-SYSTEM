@@ -30,7 +30,9 @@ services:
       - "9200:9200"
 
   auth-service:
-    build: ./auth-service
+    build: 
+      context: .
+      dockerfile: auth-service/Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: dev
     ports:
@@ -39,7 +41,9 @@ services:
       - postgres
 
   booking-service:
-    build: ./booking-service
+    build: 
+      context: .
+      dockerfile: booking-service/Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: dev
     ports:
@@ -48,7 +52,9 @@ services:
       - postgres
 
   room-service:
-    build: ./room-service
+    build: 
+      context: .
+      dockerfile: room-service/Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: dev
     ports:
