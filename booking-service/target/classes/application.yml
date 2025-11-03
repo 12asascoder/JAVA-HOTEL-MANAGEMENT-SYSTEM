@@ -1,6 +1,8 @@
 spring:
   application:
     name: booking-service
+  profiles:
+    active: dev
   datasource:
     url: jdbc:postgresql://localhost:5432/hotel_booking
     username: hotel

@@ -98,3 +98,8 @@ WARNING: Restricted methods will be blocked in a future release unless native ac
 2025-10-19T11:57:30.023+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=20m37s715ms).
 2025-10-19T12:13:28.437+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m58s413ms).
 2025-10-19T12:28:45.913+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m17s477ms).
+2025-10-19T13:25:46.614+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s208ms).
+2025-10-19T13:31:16.797+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s184ms).
+2025-10-19T13:36:48.791+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s994ms).
+2025-10-19T13:42:20.723+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s932ms).
+2025-10-19T13:47:50.915+05:30  WARN 59308 --- [auth-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s192ms).

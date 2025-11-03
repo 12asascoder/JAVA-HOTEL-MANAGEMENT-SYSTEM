@@ -1,0 +1,119 @@
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/Users/arnav/Library/Application%20Support/Code/User/globalStorage/pleiades.java-extension-pack-jdk/maven/latest/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< com.meta.hotel:room-service >---------------------
+[INFO] Building room-service 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.3.4:run (default-cli) > test-compile @ room-service >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ room-service ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ room-service ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ room-service ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /Users/arnav/Code/MAIN PROJECTS/jhabak app/room-service/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ room-service ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot:3.3.4:run (default-cli) < test-compile @ room-service <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.3.4:run (default-cli) @ room-service ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.4)
+
+2025-11-02T21:15:52.172+05:30  INFO 34417 --- [room-service] [           main] c.m.hotel.room.RoomServiceApplication    : Starting RoomServiceApplication using Java 24.0.2 with PID 34417 (/Users/arnav/Code/MAIN PROJECTS/jhabak app/room-service/target/classes started by arnav in /Users/arnav/Code/MAIN PROJECTS/jhabak app/room-service)
+2025-11-02T21:15:52.173+05:30  INFO 34417 --- [room-service] [           main] c.m.hotel.room.RoomServiceApplication    : The following 1 profile is active: "dev"
+2025-11-02T21:15:52.552+05:30  INFO 34417 --- [room-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-02T21:15:52.575+05:30  INFO 34417 --- [room-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 1 JPA repository interface.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (file:/Users/arnav/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.30/tomcat-embed-core-10.1.30.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2025-11-02T21:15:52.834+05:30  INFO 34417 --- [room-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8083 (http)
+2025-11-02T21:15:52.839+05:30  INFO 34417 --- [room-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-11-02T21:15:52.839+05:30  INFO 34417 --- [room-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-11-02T21:15:52.861+05:30  INFO 34417 --- [room-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-11-02T21:15:52.861+05:30  INFO 34417 --- [room-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 667 ms
+2025-11-02T21:15:52.971+05:30  INFO 34417 --- [room-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-02T21:15:52.993+05:30  INFO 34417 --- [room-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-11-02T21:15:53.004+05:30  INFO 34417 --- [room-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-11-02T21:15:53.096+05:30  INFO 34417 --- [room-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-02T21:15:53.105+05:30  INFO 34417 --- [room-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-11-02T21:15:53.172+05:30  INFO 34417 --- [room-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:roomdb user=SA
+2025-11-02T21:15:53.173+05:30  INFO 34417 --- [room-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-11-02T21:15:53.461+05:30  INFO 34417 --- [room-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-02T21:15:53.472+05:30  INFO 34417 --- [room-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-02T21:15:53.648+05:30  WARN 34417 --- [room-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-11-02T21:15:53.861+05:30  INFO 34417 --- [room-service] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2025-11-02T21:15:53.893+05:30  INFO 34417 --- [room-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8083 (http) with context path '/'
+2025-11-02T21:15:53.899+05:30  INFO 34417 --- [room-service] [           main] c.m.hotel.room.RoomServiceApplication    : Started RoomServiceApplication in 1.899 seconds (process running for 2.053)
+✅ Seeded 133 rooms successfully!
+2025-11-02T21:16:19.682+05:30  INFO 34417 --- [room-service] [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-02T21:16:19.682+05:30  INFO 34417 --- [room-service] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-11-02T21:16:19.683+05:30  INFO 34417 --- [room-service] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-11-02T23:47:57.640+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m32s899ms).
+2025-11-02T23:53:28.912+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s275ms).
+2025-11-03T00:04:04.712+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m35s800ms).
+2025-11-03T00:09:36.730+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m32s17ms).
+2025-11-03T00:15:10.198+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m33s469ms).
+2025-11-03T00:21:09.946+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m59s748ms).
+2025-11-03T00:26:40.756+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s810ms).
+2025-11-03T00:37:11.268+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m30s512ms).
+2025-11-03T00:42:41.919+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s651ms).
+2025-11-03T00:48:13.107+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s187ms).
+2025-11-03T00:58:50.033+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m36s927ms).
+2025-11-03T01:04:23.186+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m33s153ms).
+2025-11-03T01:09:55.156+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s970ms).
+2025-11-03T01:15:25.965+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s809ms).
+2025-11-03T01:26:03.192+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m37s227ms).
+2025-11-03T01:31:34.200+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s8ms).
+2025-11-03T01:37:04.664+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s464ms).
+2025-11-03T01:48:51.593+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m46s929ms).
+2025-11-03T01:54:22.353+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s760ms).
+2025-11-03T01:59:54.162+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s809ms).
+2025-11-03T02:05:25.826+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s664ms).
+2025-11-03T02:15:57.685+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m31s858ms).
+2025-11-03T02:21:27.904+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s220ms).
+2025-11-03T02:32:04.237+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m36s333ms).
+2025-11-03T02:37:35.402+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s165ms).
+2025-11-03T02:44:39.388+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m3s986ms).
+2025-11-03T02:50:10.605+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s217ms).
+2025-11-03T03:00:45.390+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m34s784ms).
+2025-11-03T03:06:17.011+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s622ms).
+2025-11-03T03:16:49.010+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m31s998ms).
+2025-11-03T03:22:24.527+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m35s518ms).
+2025-11-03T03:27:55.594+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m31s67ms).
+2025-11-03T03:38:32.117+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m36s523ms).
+2025-11-03T03:45:32.857+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m740ms).
+2025-11-03T03:51:07.259+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m34s402ms).
+2025-11-03T04:01:46.061+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m38s802ms).
+2025-11-03T04:07:21.797+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m35s736ms).
+2025-11-03T04:12:54.347+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m32s550ms).
+2025-11-03T04:18:30.024+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m35s677ms).
+2025-11-03T04:29:04.110+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m34s86ms).
+2025-11-03T04:34:34.265+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m30s155ms).
+2025-11-03T04:39:24.467+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m50s202ms).
+2025-11-03T05:18:54.598+05:30  WARN 34417 --- [room-service] [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s810ms), soft-evicting connections from pool.
+2025-11-03T05:36:12.221+05:30  INFO 34417 --- [room-service] [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03T05:36:12.258+05:30  INFO 34417 --- [room-service] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-11-03T05:36:12.263+05:30  INFO 34417 --- [room-service] [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
