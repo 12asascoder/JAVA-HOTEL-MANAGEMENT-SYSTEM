@@ -15,6 +15,10 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
+    public List<Room> listAll() {
+        return roomRepository.findAll();
+    }
+
     public List<Room> listAvailable() {
         return roomRepository.findByStatus(RoomStatus.AVAILABLE);
     }

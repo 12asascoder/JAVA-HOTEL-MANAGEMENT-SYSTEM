@@ -1,13 +1,45 @@
 import { useAuth } from '../../auth/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useHotelData } from '../../context/HotelDataContext'
+import axios from 'axios'
 
 export default function ManagerDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState<string | null>(null)
   const { rooms, housekeepingTasks, guestServices, guestDetails, revenueData, staffMembers } = useHotelData()
+  const [analyticsData, setAnalyticsData] = useState<any>(null)
+  const [predictions, setPredictions] = useState<any>(null)
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false)
+
+  useEffect(() => {
+    if (showModal === 'analytics' || showModal === 'predictions') {
+      loadAnalytics()
+      loadPredictions()
+    }
+  }, [showModal])
+
+  const loadAnalytics = async () => {
+    setLoadingAnalytics(true)
+    try {
+      const res = await axios.get('/api/analytics/dashboard')
+      setAnalyticsData(res.data.data)
+    } catch (error) {
+      console.error('Error loading analytics:', error)
+    } finally {
+      setLoadingAnalytics(false)
+    }
+  }
+
+  const loadPredictions = async () => {
+    try {
+      const res = await axios.get('/api/analytics/predictions')
+      setPredictions(res.data.data)
+    } catch (error) {
+      console.error('Error loading predictions:', error)
+    }
+  }
 
   const handleLogout = () => {
     logout()
@@ -207,7 +239,7 @@ export default function ManagerDashboard() {
         {/* Manager Quick Actions */}
         <div className="mt-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
           <h2 className="text-2xl font-bold mb-4">Manager Quick Actions</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <button 
               onClick={() => handleQuickAction('room-management')}
               className="bg-blue-600 hover:bg-blue-700 rounded-lg p-4 text-center transition-colors"
@@ -223,8 +255,15 @@ export default function ManagerDashboard() {
               <div className="font-medium">Analytics</div>
             </button>
             <button 
-              onClick={() => handleQuickAction('staff-management')}
+              onClick={() => handleQuickAction('predictions')}
               className="bg-purple-600 hover:bg-purple-700 rounded-lg p-4 text-center transition-colors"
+            >
+              <div className="text-2xl mb-2">🔮</div>
+              <div className="font-medium">Predictive Engine</div>
+            </button>
+            <button 
+              onClick={() => handleQuickAction('staff-management')}
+              className="bg-indigo-600 hover:bg-indigo-700 rounded-lg p-4 text-center transition-colors"
             >
               <div className="text-2xl mb-2">👥</div>
               <div className="font-medium">Staff Management</div>
@@ -337,73 +376,147 @@ export default function ManagerDashboard() {
               <button onClick={closeModal} className="text-gray-400 hover:text-white">✕</button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-3">Revenue Analytics</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Today:</span>
-                    <span className="text-green-400">₹1,93,500</span>
+            {loadingAnalytics ? (
+              <div className="text-center py-8">Loading analytics...</div>
+            ) : analyticsData ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3">Revenue Analytics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Today:</span>
+                      <span className="text-green-400">₹{analyticsData.revenue?.today?.toLocaleString('en-IN') || '0'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Week:</span>
+                      <span className="text-green-400">₹{analyticsData.revenue?.thisWeek?.toLocaleString('en-IN') || '0'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Month:</span>
+                      <span className="text-green-400">₹{analyticsData.revenue?.thisMonth?.toLocaleString('en-IN') || '0'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Growth:</span>
+                      <span className="text-green-400">+{analyticsData.revenue?.growth || 0}%</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Week:</span>
-                    <span className="text-green-400">₹12,45,000</span>
+                </div>
+                
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3">Occupancy Analytics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Current Rate:</span>
+                      <span className="text-blue-400">{analyticsData.occupancy?.current || 0}%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Available:</span>
+                      <span className="text-blue-400">{analyticsData.occupancy?.available || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Occupied:</span>
+                      <span className="text-blue-400">{analyticsData.occupancy?.occupied || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Maintenance:</span>
+                      <span className="text-yellow-400">{analyticsData.occupancy?.maintenance || 0}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Month:</span>
-                    <span className="text-green-400">₹37,80,000</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Growth:</span>
-                    <span className="text-green-400">+12.5%</span>
+                </div>
+                
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3">Guest Analytics</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Satisfaction:</span>
+                      <span className="text-yellow-400">{analyticsData.satisfaction?.averageRating || 0}★</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Reviews Today:</span>
+                      <span className="text-yellow-400">{analyticsData.satisfaction?.reviewsToday || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Complaints:</span>
+                      <span className="text-red-400">{analyticsData.satisfaction?.complaints || 0}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Staff Efficiency:</span>
+                      <span className="text-green-400">{analyticsData.staff?.efficiency || 0}%</span>
+                    </div>
                   </div>
                 </div>
               </div>
-              
-              <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-3">Occupancy Analytics</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Current Rate:</span>
-                    <span className="text-blue-400">78%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Peak Hours:</span>
-                    <span className="text-blue-400">2-6 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Avg Stay:</span>
-                    <span className="text-blue-400">2.3 days</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Repeat Guests:</span>
-                    <span className="text-blue-400">45%</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="font-semibold mb-3">Guest Analytics</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Satisfaction:</span>
-                    <span className="text-yellow-400">4.8★</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Reviews:</span>
-                    <span className="text-yellow-400">156</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Complaints:</span>
-                    <span className="text-red-400">3</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>NPS Score:</span>
-                    <span className="text-green-400">72</span>
-                  </div>
-                </div>
-              </div>
+            ) : (
+              <div className="text-center py-8 text-red-400">Failed to load analytics</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showModal === 'predictions' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-800 rounded-xl p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold">🔮 Predictive Engine</h3>
+              <button onClick={closeModal} className="text-gray-400 hover:text-white">✕</button>
             </div>
+            
+            {predictions ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h4 className="font-semibold mb-3">Next Week Forecast</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span>Predicted Occupancy:</span>
+                        <span className="text-blue-400">{predictions.nextWeekOccupancy || 0}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Peak Day:</span>
+                        <span className="text-green-400">{predictions.peakDay || 'N/A'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Demand Trend:</span>
+                        <span className={`${predictions.demandTrend === 'increasing' ? 'text-green-400' : 'text-red-400'}`}>
+                          {predictions.demandTrend || 'stable'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/5 rounded-lg p-4">
+                    <h4 className="font-semibold mb-3">Revenue Predictions</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span>Next Month:</span>
+                        <span className="text-green-400">₹{predictions.nextMonthRevenue?.toLocaleString('en-IN') || '0'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Recommended Pricing:</span>
+                        <span className="text-yellow-400">+{(predictions.recommendedPricing - 1) * 100 || 0}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3">7-Day Forecast</h4>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {predictions.forecast?.map((day: any, idx: number) => (
+                      <div key={idx} className="flex justify-between items-center p-2 bg-white/5 rounded">
+                        <span className="text-sm">{day.date || 'N/A'}</span>
+                        <div className="flex gap-4">
+                          <span className="text-sm text-blue-400">Occupancy: {day.predictedOccupancy || 0}%</span>
+                          <span className="text-sm text-gray-400">Confidence: {day.confidence || 0}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">Loading predictions...</div>
+            )}
           </div>
         </div>
       )}

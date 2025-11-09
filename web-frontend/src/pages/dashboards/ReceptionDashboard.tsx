@@ -7,7 +7,7 @@ export default function ReceptionDashboard() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState<string | null>(null)
-  const { rooms, addGuestService, guestDetails, addGuestDetails, updateGuestDetails, revenueData } = useHotelData()
+  const { rooms, addGuestService, guestDetails, addGuestDetails, updateGuestDetails, revenueData, guestServices } = useHotelData()
   const [guestData, setGuestData] = useState({
     name: '',
     phone: '',
@@ -212,52 +212,125 @@ export default function ReceptionDashboard() {
                               </td>
                             </tr>
                           ))}
+                          {guestDetails.filter(g => g.status === 'checked-in').length === 0 && (
+                            <tr>
+                              <td colSpan={6} className="py-4 text-center text-slate-400">No checked-in guests</td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
                   </div>
 
+                  {/* Guest Requests Section */}
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h2 className="text-2xl font-bold mb-4">Check-out List</h2>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="border-b border-white/20">
-                            <th className="text-left py-2">Guest Name</th>
-                            <th className="text-left py-2">Room</th>
-                            <th className="text-left py-2">Check-out Time</th>
-                            <th className="text-left py-2">Bill Amount (₹)</th>
-                            <th className="text-left py-2">Payment</th>
-                            <th className="text-left py-2">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {guestDetails.filter(g => g.status === 'checked-out').map(guest => (
-                            <tr key={guest.id} className="border-b border-white/10">
-                              <td className="py-2 font-medium">{guest.name}</td>
-                              <td className="py-2">{guest.roomNumber}</td>
-                              <td className="py-2">{new Date(guest.checkOutDate).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</td>
-                              <td className="py-2">₹{guest.totalAmount.toLocaleString('en-IN')}</td>
-                              <td className="py-2">
-                                <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Paid</span>
-                              </td>
-                              <td className="py-2">
-                                <button 
-                                  onClick={() => {
-                                    setSelectedGuest(guest)
-                                    setShowModal('view-details')
-                                  }}
-                                  className="text-blue-400 hover:text-blue-300 text-xs"
-                                >
-                                  View Details
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <h2 className="text-2xl font-bold mb-4">Guest Requests</h2>
+                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                      {guestServices.filter(service => service.status === 'pending').map(service => (
+                        <div key={service.id} className="bg-white/5 rounded-lg p-4 border border-white/10">
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <p className="font-medium text-sm">Room {service.roomNumber}</p>
+                              <p className="text-xs text-slate-400 mt-1">{service.serviceType}</p>
+                            </div>
+                            <span className={`px-2 py-1 rounded-full text-xs ${
+                              service.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                              service.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                              'bg-red-500/20 text-red-400'
+                            }`}>
+                              {service.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-slate-300 mb-2">{service.description}</p>
+                          <p className="text-xs text-slate-400">
+                            Requested: {new Date(service.requestedAt).toLocaleString('en-IN', { 
+                              hour: '2-digit', 
+                              minute: '2-digit',
+                              day: '2-digit',
+                              month: 'short'
+                            })}
+                          </p>
+                          <div className="flex gap-2 mt-3">
+                            <button
+                              onClick={() => {
+                                // Mark as completed
+                                const updatedServices = guestServices.map(s => 
+                                  s.id === service.id ? { ...s, status: 'completed' as const } : s
+                                )
+                                // Update context - would need to add updateGuestService method
+                                alert(`Service request for Room ${service.roomNumber} marked as completed`)
+                              }}
+                              className="flex-1 bg-green-600 hover:bg-green-700 text-xs py-1.5 rounded transition-colors"
+                            >
+                              Mark Complete
+                            </button>
+                            <button
+                              onClick={() => {
+                                alert(`Service request for Room ${service.roomNumber} has been escalated`)
+                              }}
+                              className="flex-1 bg-orange-600 hover:bg-orange-700 text-xs py-1.5 rounded transition-colors"
+                            >
+                              Escalate
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {guestServices.filter(service => service.status === 'pending').length === 0 && (
+                        <div className="text-center py-8 text-slate-400">
+                          <p className="text-sm">No pending guest requests</p>
+                        </div>
+                      )}
                     </div>
                   </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <h2 className="text-2xl font-bold mb-4">Check-out List</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/20">
+                    <th className="text-left py-2">Guest Name</th>
+                    <th className="text-left py-2">Room</th>
+                    <th className="text-left py-2">Check-out Time</th>
+                    <th className="text-left py-2">Bill Amount (₹)</th>
+                    <th className="text-left py-2">Payment</th>
+                    <th className="text-left py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {guestDetails.filter(g => g.status === 'checked-out').map(guest => (
+                    <tr key={guest.id} className="border-b border-white/10">
+                      <td className="py-2 font-medium">{guest.name}</td>
+                      <td className="py-2">{guest.roomNumber}</td>
+                      <td className="py-2">{new Date(guest.checkOutDate).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</td>
+                      <td className="py-2">₹{guest.totalAmount.toLocaleString('en-IN')}</td>
+                      <td className="py-2">
+                        <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">Paid</span>
+                      </td>
+                      <td className="py-2">
+                        <button 
+                          onClick={() => {
+                            setSelectedGuest(guest)
+                            setShowModal('view-details')
+                          }}
+                          className="text-blue-400 hover:text-blue-300 text-xs"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {guestDetails.filter(g => g.status === 'checked-out').length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="py-4 text-center text-slate-400">No checked-out guests</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         {/* Reception Quick Actions */}

@@ -29,6 +29,10 @@ public class BookingService {
         return overlaps.isEmpty();
     }
 
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
     @Transactional
     public Booking createBooking(Booking booking) {
         if (!isRoomAvailable(booking.getRoomId(), booking.getCheckInDate(), booking.getCheckOutDate())) {

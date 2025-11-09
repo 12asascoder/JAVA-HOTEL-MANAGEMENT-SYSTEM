@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function RoomBooking() {
   const { user } = useAuth()
@@ -40,15 +42,39 @@ export default function RoomBooking() {
     }
   }
 
-  const handlePayment = (method: string) => {
+  const navigate = useNavigate()
+  
+  const handlePayment = async (method: string) => {
     setPaymentStatus('Processing...')
-    setTimeout(() => {
-      setPaymentStatus('Payment successful! Redirecting to guest features...')
+    try {
+      // First, get available rooms to find a room ID
+      const roomsRes = await axios.get('/api/rooms/available')
+      const availableRooms = roomsRes.data.data || []
+      const selectedRoom = availableRooms.find((r: any) => r.type === bookingData.roomType)
+      
+      if (!selectedRoom) {
+        setPaymentStatus('No rooms available for selected type')
+        return
+      }
+      
+      // Create booking
+      const checkIn = new Date(bookingData.checkInDate)
+      const checkOut = new Date(bookingData.checkOutDate)
+      const bookingRes = await axios.post('/api/bookings', {
+        customerId: 1, // In a real app, get from auth context
+        roomId: selectedRoom.id,
+        checkInDate: checkIn.toISOString().split('T')[0],
+        checkOutDate: checkOut.toISOString().split('T')[0]
+      })
+      
+      setPaymentStatus('Payment successful! Booking confirmed. Redirecting...')
       setTimeout(() => {
-        // Redirect to guest dashboard
-        window.location.href = '/guest'
+        navigate('/guest')
       }, 2000)
-    }, 2000)
+    } catch (error: any) {
+      console.error('Booking error:', error)
+      setPaymentStatus(`Error: ${error.response?.data?.message || 'Booking failed'}`)
+    }
   }
 
   if (showPayment) {

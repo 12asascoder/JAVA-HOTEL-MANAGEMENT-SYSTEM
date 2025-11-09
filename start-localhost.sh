@@ -71,17 +71,49 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-echo "   Frontend on http://localhost:5999"
+echo "   Frontend on http://localhost:5173"
 npm run dev > ../logs/frontend.log 2>&1 &
 FRONTEND_PID=$!
 
 cd ..
 
+# Wait for frontend to be ready and auto-launch browser
+echo ""
+echo "⏳ Waiting for frontend to be ready..."
+FRONTEND_URL="http://localhost:5173"
+MAX_ATTEMPTS=30
+ATTEMPT=0
+
+while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+    if curl -s "$FRONTEND_URL" > /dev/null 2>&1; then
+        echo "✅ Frontend is ready!"
+        echo ""
+        echo "🌐 Auto-launching browser..."
+        # Open browser (works on macOS, Linux with xdg-open, Windows with start)
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            open "$FRONTEND_URL"
+        elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            xdg-open "$FRONTEND_URL" 2>/dev/null || sensible-browser "$FRONTEND_URL" 2>/dev/null
+        elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
+            start "$FRONTEND_URL" 2>/dev/null
+        else
+            echo "Please manually open: $FRONTEND_URL"
+        fi
+        break
+    fi
+    ATTEMPT=$((ATTEMPT + 1))
+    sleep 2
+done
+
+if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+    echo "⚠️  Frontend is taking longer than expected. Please check manually at $FRONTEND_URL"
+fi
+
 echo ""
 echo "🎉 All services started successfully!"
 echo ""
 echo "📱 Access Points (Localhost Only):"
-echo "   Web Interface: http://localhost:5999"
+echo "   Web Interface: http://localhost:5173"
 echo "   Auth Service: http://localhost:8081"
 echo "   Booking Service: http://localhost:8082"
 echo "   Room Service: http://localhost:8083"

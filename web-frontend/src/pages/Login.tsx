@@ -31,7 +31,8 @@ export default function Login() {
       nav(route)
     } catch (e: any) {
       console.error('Login error:', e)
-      setError('Invalid credentials or server unavailable')
+      const errorMessage = e.response?.data?.message || e.message || 'Invalid credentials or server unavailable'
+      setError(errorMessage)
     } finally { setLoading(false) }
   }
 

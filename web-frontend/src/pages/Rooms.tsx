@@ -5,9 +5,28 @@ type Room = { id: number; number: string; type: string; status: string; basePric
 
 export default function Rooms() {
   const [rooms, setRooms] = useState<Room[]>([])
+  const [allRooms, setAllRooms] = useState<Room[]>([])
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [newRoom, setNewRoom] = useState({ number: '', type: 'Standard', status: 'AVAILABLE', basePrice: 120 })
+  const [loading, setLoading] = useState(false)
+
+  const loadRooms = async () => {
+    try {
+      const res = await axios.get('/api/rooms')
+      const allRoomsData = res.data.data || []
+      setAllRooms(allRoomsData)
+      setRooms(allRoomsData)
+    } catch (error) {
+      console.error('Error loading rooms:', error)
+      setRooms([])
+      setAllRooms([])
+    }
+  }
 
   useEffect(() => {
-    axios.get('/api/rooms/available').then(r => setRooms(r.data.data || [])).catch(() => setRooms([]))
+    loadRooms()
   }, [])
 
   const getStatusColor = (status: string) => {
@@ -19,6 +38,50 @@ export default function Rooms() {
       default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30'
     }
   }
+
+  const handleAddRoom = async () => {
+    if (!newRoom.number || !newRoom.type) {
+      alert('Please fill in room number and type')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const response = await axios.post('/api/rooms', {
+        number: newRoom.number,
+        type: newRoom.type,
+        status: newRoom.status,
+        basePrice: newRoom.basePrice
+      })
+      
+      if (response.data.success) {
+        alert('Room added successfully!')
+        setShowAddModal(false)
+        setNewRoom({ number: '', type: 'Standard', status: 'AVAILABLE', basePrice: 120 })
+        loadRooms()
+      }
+    } catch (error: any) {
+      console.error('Error adding room:', error)
+      alert(error.response?.data?.message || 'Failed to add room')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setRooms(allRooms)
+      return
+    }
+
+    const query = searchQuery.toLowerCase()
+    const filtered = allRooms.filter(room => 
+      room.number.toLowerCase().includes(query) ||
+      room.type.toLowerCase().includes(query) ||
+      room.status.toLowerCase().includes(query)
+    )
+    setRooms(filtered)
+  }, [searchQuery, allRooms])
 
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900 text-white overflow-hidden">
@@ -37,7 +100,7 @@ export default function Rooms() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-300 text-sm">Total Rooms</p>
-                <p className="text-3xl font-bold">{rooms.length || 0}</p>
+                <p className="text-3xl font-bold">{allRooms.length || 0}</p>
               </div>
               <div className="w-12 h-12 bg-emerald-500/20 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">🏨</span>
@@ -50,7 +113,7 @@ export default function Rooms() {
               <div>
                 <p className="text-slate-300 text-sm">Available</p>
                 <p className="text-3xl font-bold text-green-400">
-                  {rooms.filter(r => r.status.toLowerCase() === 'available').length}
+                  {allRooms.filter(r => r.status.toLowerCase() === 'available').length}
                 </p>
               </div>
               <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
@@ -64,7 +127,7 @@ export default function Rooms() {
               <div>
                 <p className="text-slate-300 text-sm">Occupied</p>
                 <p className="text-3xl font-bold text-blue-400">
-                  {rooms.filter(r => r.status.toLowerCase() === 'occupied').length}
+                  {allRooms.filter(r => r.status.toLowerCase() === 'occupied').length}
                 </p>
               </div>
               <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
@@ -78,7 +141,7 @@ export default function Rooms() {
               <div>
                 <p className="text-slate-300 text-sm">Maintenance</p>
                 <p className="text-3xl font-bold text-yellow-400">
-                  {rooms.filter(r => r.status.toLowerCase() === 'maintenance').length}
+                  {allRooms.filter(r => r.status.toLowerCase() === 'maintenance').length}
                 </p>
               </div>
               <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center">
@@ -93,11 +156,17 @@ export default function Rooms() {
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
             <h2 className="text-2xl font-bold mb-4">Room Actions</h2>
             <div className="grid grid-cols-2 gap-4">
-              <button className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg p-4 text-center transition-all transform hover:scale-105">
+              <button 
+                onClick={() => setShowAddModal(true)}
+                className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg p-4 text-center transition-all transform hover:scale-105"
+              >
                 <div className="text-2xl mb-2">➕</div>
                 <div className="font-medium">Add Room</div>
               </button>
-              <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg p-4 text-center transition-all transform hover:scale-105">
+              <button 
+                onClick={() => setShowSearchModal(true)}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg p-4 text-center transition-all transform hover:scale-105"
+              >
                 <div className="text-2xl mb-2">🔍</div>
                 <div className="font-medium">Search Rooms</div>
               </button>
@@ -170,6 +239,122 @@ export default function Rooms() {
             )}
           </div>
         </div>
+
+        {/* Add Room Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full border border-white/20">
+              <h2 className="text-2xl font-bold mb-4">Add New Room</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Room Number</label>
+                  <input
+                    type="text"
+                    value={newRoom.number}
+                    onChange={(e) => setNewRoom({ ...newRoom, number: e.target.value })}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-emerald-400"
+                    placeholder="e.g., 101, 202"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Room Type</label>
+                  <select
+                    value={newRoom.type}
+                    onChange={(e) => setNewRoom({ ...newRoom, type: e.target.value })}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-emerald-400"
+                  >
+                    <option>Standard</option>
+                    <option>Deluxe</option>
+                    <option>Executive Suite</option>
+                    <option>Presidential Suite</option>
+                    <option>Penthouse Suite</option>
+                    <option>Family Room</option>
+                    <option>Business Room</option>
+                    <option>Honeymoon Suite</option>
+                    <option>Ocean View</option>
+                    <option>Garden View</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Status</label>
+                  <select
+                    value={newRoom.status}
+                    onChange={(e) => setNewRoom({ ...newRoom, status: e.target.value })}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-emerald-400"
+                  >
+                    <option>AVAILABLE</option>
+                    <option>OCCUPIED</option>
+                    <option>CLEANING</option>
+                    <option>MAINTENANCE</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Base Price (USD)</label>
+                  <input
+                    type="number"
+                    value={newRoom.basePrice}
+                    onChange={(e) => setNewRoom({ ...newRoom, basePrice: parseFloat(e.target.value) || 0 })}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-emerald-400"
+                    placeholder="120"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleAddRoom}
+                    disabled={loading}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 rounded-lg py-3 font-medium transition-colors"
+                  >
+                    {loading ? 'Adding...' : 'Add Room'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAddModal(false)
+                      setNewRoom({ number: '', type: 'Standard', status: 'AVAILABLE', basePrice: 120 })
+                    }}
+                    className="flex-1 bg-slate-600 hover:bg-slate-700 rounded-lg py-3 font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Search Modal */}
+        {showSearchModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-800 rounded-xl p-6 max-w-md w-full border border-white/20">
+              <h2 className="text-2xl font-bold mb-4">Search Rooms</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Search by Room Number, Type, or Status</label>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:border-blue-400"
+                    placeholder="Search rooms..."
+                    autoFocus
+                  />
+                </div>
+                <div className="text-sm text-slate-400">
+                  Found {rooms.length} room{rooms.length !== 1 ? 's' : ''}
+                </div>
+                <button
+                  onClick={() => {
+                    setShowSearchModal(false)
+                    setSearchQuery('')
+                    setRooms(allRooms)
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 rounded-lg py-3 font-medium transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
